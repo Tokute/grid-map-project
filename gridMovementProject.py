@@ -1,26 +1,24 @@
-grid_map = [
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0]
-]
+# grid_map is the map of the level or stage
+grid_map = []
 
-grid_map[2][2] = 1 # initial player location
+def createMap(row, column):
+    grid_map = [[0 for _ in range(column)] for _ in range(row)]
+    return grid_map
 
-def setOuterLimit():
-    for row in range(5):
-        for column in range(5):
-            if (row == 0 or row == 4):
+def setOuterLimit(givenRow, givenColumn):
+    for row in range(givenRow):
+        for column in range(givenColumn):
+            if (row == 0 or row == givenRow-1):
                 grid_map[row][column] = 2
 
-            if (column == 0 or column == 4):
+            if (column == 0 or column == givenColumn-1):
                 grid_map[row][column] = 2
+    return grid_map
 
 def showMap():
-    for row in range(5):
-        for column in range(5):
-            print(f"{grid_map[row][column]}", end=" ")
+    for row in grid_map:
+        for element in row:
+            print(element, end=" ")
         print("")
 
 def getPlayerLocation(): # returns 2 values: row, column
@@ -53,12 +51,16 @@ def moveLeft(lastRow, lastCol):
 
 # main program below
 
-#showMap()
-setOuterLimit()
-#print("Set Outer Limit Successful")
+row = int(input("What will be the number of rows for this map: "))
+column = int(input("What will be the number of columns for this map: "))
+
+grid_map = createMap(row, column)
+grid_map = setOuterLimit(row, column)
 showMap()
 
+'''
 newRow, newCol = getPlayerLocation()
+
 
 while (isLocationValid(newRow, newCol)):
     lastRow, lastCol = getPlayerLocation()
@@ -82,3 +84,4 @@ while (isLocationValid(newRow, newCol)):
         print("Player is still alive")
     else:
         print("Player hit the grid. Player has died.")
+'''
