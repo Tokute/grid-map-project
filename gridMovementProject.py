@@ -1,4 +1,9 @@
+import keyboard
+import time
+import os
+
 # grid_map is the map of the level or stage
+# TO DO: IMPLEMENT SOMETHING THAT WILL NOT REGISTER HELD KEYS
 grid_map = []
 
 def createMap(row, column):
@@ -83,30 +88,40 @@ playerRow, playerColumn = getPlayerLocation()
 print(f"Player is at [{playerRow}][{playerColumn}]")
 
 newRow, newCol = getPlayerLocation()
+key_states = {"w": False, "a": False, "s": False, "d": False}
 
-
-while (isLocationValid(newRow, newCol)):
+while True:
     lastRow, lastCol = getPlayerLocation()
 
-    playerMovement = input("Where would you like to go (w/a/s/d): ").lower()
-    match (playerMovement):
-        case 'w':
-            moveUp(lastRow, lastCol)
-        case 's':
-            moveDown(lastRow, lastCol)
-        case 'd':
-            moveRight(lastRow, lastCol)
-        case 'a':
-            moveLeft(lastRow, lastCol)
-        case _:
-            print("Error, invalid movement input.")
+    if not isLocationValid(lastRow, lastCol):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        grid_map[lastRow][lastCol] = 3
+        showMap()
+        print("Player hit the grid. Player has died")
+        break
 
-    
-    newRow, newCol = getPlayerLocation()
-    if (isLocationValid(newRow, newCol)):
+    moved = False
+    for key in key_states:
+        if keyboard.is_pressed(key):
+            if not key_states[key]:
+                match key:
+                    case 'w': moveUp(lastRow, lastCol)
+                    case 's': moveDown(lastRow, lastCol)
+                    case 'a': moveLeft(lastRow, lastCol)
+                    case 'd': moveRight(lastRow, lastCol)
+
+                moved = True
+                key_states[key] = True
+                break
+        else:
+            key_states[key] = False
+
+    if moved:
+        os.system('cls' if os.name == 'nt' else 'clear')
         showMap()
-        print("Player is still alive")
-    else:
-        grid_map[newRow][newCol] = 2
-        showMap()
-        print("Player hit the grid. Player has died.")
+        #newRow, newCol = getPlayerLocation()
+
+    if keyboard.is_pressed("esc"):
+        break
+
+    time.sleep(0.05)
