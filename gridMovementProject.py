@@ -3,7 +3,22 @@ import time
 import os
 
 # grid_map is the map of the level or stage
-# TO DO: IMPLEMENT SOMETHING THAT WILL NOT REGISTER HELD KEYS
+# TO DO: Try to learn about OOP or refactor the entire program before developing next ideas
+# Also need more ideas to continue this project with:
+"""
+Ideas:
+    mapRenderer() function: this function will render 0s, 1s, 2s to unicode (maybe)
+        will probably do this by creating another copy of grid_map, or just make an decision structure
+        that loops through the whole grid_map to convert numericals into unicode
+
+    Dynamic Map Shapes
+        this will make each grid_map dynamic with different or combined shapes
+        currently dont have any idea how can I do this, will need research
+
+    Randomly Generated Structures/Objects
+        this will generate random integers on the 0s, these integers will represent objects that the player will need
+        or something
+"""
 grid_map = []
 
 def createMap(row, column):
