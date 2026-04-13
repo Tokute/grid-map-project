@@ -19,6 +19,11 @@ Ideas:
     Randomly Generated Structures/Objects
         this will generate random integers on the 0s, these integers will represent objects that the player will need
         or something
+
+    Goal/Enter Room Condition
+        Maybe set a random location or somewhere in the outer limits to maybe number 4. 4 basically means if the player
+        manages to reach this index, they will advance to another room.
+        (This project is gonna need more handling on more grid_maps)
 """
 grid_map = []
 
@@ -54,18 +59,36 @@ def setOuterLimit():
                 grid_map[i][j] = 2
     return grid_map
 
-def showMap():
+def showMap(render=False):
     """
         Prints out the grid_map
         
-        No Args
+        Args:
+            render (bool): determines if the function will print pure integers or unicode
 
         No Returns
     """
-    for row in grid_map:
-        for element in row:
-            print(element, end=" ")
-        print("")
+
+    if not render:
+        for row in grid_map:
+            for element in row:
+                print(element, end=" ")
+            print("")
+    else:
+        for row in grid_map:
+            for element in row:
+                match (element):
+                    case 0:
+                        print(chr(0x2B1B), end=" ")
+                    case 1:
+                        print(chr(0x2705), end=" ")
+                    case 2:
+                        print(chr(0x1F536), end=" ")
+                    case 3:
+                        print(chr(0x1F198), end=" ")
+                    case _:
+                        print(element, end=" ")
+            print("")
 
 def setPlayerLocation():
     """
@@ -150,7 +173,7 @@ while True:
 grid_map = createMap(row, column)
 grid_map = setOuterLimit()
 grid_map = setPlayerLocation()
-showMap()
+showMap(render=True)
 
 playerRow, playerColumn = getPlayerLocation()
 print(f"Player is at [{playerRow}][{playerColumn}]")
@@ -164,7 +187,7 @@ while True:
     if not isLocationValid(lastRow, lastCol):
         os.system('cls' if os.name == 'nt' else 'clear')
         grid_map[lastRow][lastCol] = 3
-        showMap()
+        showMap(render=True)
         print("Player hit the grid. Player has died")
         break
 
@@ -186,7 +209,7 @@ while True:
 
     if moved:
         os.system('cls' if os.name == 'nt' else 'clear')
-        showMap()
+        showMap(render=True)
         #newRow, newCol = getPlayerLocation()
 
     if keyboard.is_pressed("esc"):
