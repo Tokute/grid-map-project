@@ -1,0 +1,1 @@
+This small project basically uses a 2d list to to show the playable area. This must not have any good reasons or causes but I wanna try making a small program that takes in my current coding knowledge from my first year of CS and basically the progress of my learnings.
