@@ -3,6 +3,7 @@ import time
 import os
 
 # grid_map is the map of the level or stage
+# 0 = empty space, 1 = player, 2 = outer limit/kill zone, 3 = player meets outer limit
 # TO DO: Try to learn about OOP or refactor the entire program before developing next ideas
 # Also need more ideas to continue this project with:
 """
@@ -22,10 +23,28 @@ Ideas:
 grid_map = []
 
 def createMap(row, column):
+    """
+        Creates the map from two arguments(row, column)
+
+        Args:
+            row (int): num of rows
+            column (int): num of columns
+
+        Returns:
+            grid_map (2d List): filled with zeros with rows and columns based on the args
+    """
     grid_map = [[0 for _ in range(column)] for _ in range(row)]
     return grid_map
 
 def setOuterLimit():
+    """
+        Sets the outer limit of the grid_map
+
+        No args
+
+        Returns:
+            grid_map (2d List): grid_map with 2s on the edge
+    """
     for i in range(row):
         for j in range(column):
             if (i == 0 or i == row-1):
@@ -36,17 +55,41 @@ def setOuterLimit():
     return grid_map
 
 def showMap():
+    """
+        Prints out the grid_map
+        
+        No Args
+
+        No Returns
+    """
     for row in grid_map:
         for element in row:
             print(element, end=" ")
         print("")
 
 def setPlayerLocation():
+    """
+        Sets the player location on the middle of the grid_map
+
+        No Args
+
+        Returns:
+        grid_map (2d List): grid_map with a number 1 on the middle
+    """
     grid_map[row//2][column//2] = 1
 
     return grid_map
 
 def getPlayerLocation(): # returns 2 values: row, column
+    """
+        Loops through grid_map to find where the player (1) is located
+
+        No Args
+
+        Returns:
+            foundRow (int): row index of player location
+            foundColumn (int): row column of player location
+    """
     playerFound = False
     for i in range(row):
         for j in range(column):
@@ -60,6 +103,16 @@ def getPlayerLocation(): # returns 2 values: row, column
         return -1, -1
             
 def isLocationValid(playerRow, playerCol):
+    """
+        Checks if the location of the player is not within the outer limits
+
+        Args:
+            playerRow (int)
+            playerCol (int)
+
+        Returns:
+            True or False
+    """
     if (((playerRow == 0) or (playerRow == row-1)) or ((playerCol == 0) or (playerCol == column-1))):
         return False
     else:
