@@ -74,15 +74,15 @@ def showMap(render=False):
         for row in grid_map:
             for element in row:
                 match (element):
-                    case 0:
+                    case 0: # Free space (black square emoji)
                         print(chr(0x2B1B), end=" ")
-                    case 1:
+                    case 1: # Player space (checkmark emoji)
                         print(chr(0x2705), end=" ")
-                    case 2:
+                    case 2: # Outer/Killzone space (red diamond emoji)
                         print(chr(0x1F536), end=" ")
-                    case 3:
+                    case 3: # Death space (SOS emoji)
                         print(chr(0x1F198), end=" ")
-                    case _:
+                    case _: # if unknown/unassigned integer, print integer itself
                         print(element, end=" ")
             print("")
 
@@ -209,6 +209,7 @@ while True:
         #newRow, newCol = getPlayerLocation()
 
     if keyboard.is_pressed("esc"):
+        
         break
 
     time.sleep(0.05)
