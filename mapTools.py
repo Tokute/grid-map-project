@@ -1,7 +1,7 @@
 import random
 grid_map = []
 
-def createMap(row, column):
+def createMap(row, column, setOuterLimit=True):
     """
         Creates the map from two arguments(row, column)
 
@@ -13,19 +13,32 @@ def createMap(row, column):
             grid_map (2d List): filled with zeros with rows and columns based on the args
     """
     grid_map = [[0 for _ in range(column)] for _ in range(row)]
+
+    if setOuterLimit:
+        setGridLimit(grid_map)
+
     return grid_map
 
-def generateMap():
+def generateMap(setOuterLimit=True):
     """
         generateMap basically generates a 2d List randomly. No Args, Returns grid_map (2d List)
     """
-    row = random.randint(3, 10)
-    column = random.randint(3, 10)
+    row = random.randint(5, 10)
+    column = random.randint(5, 10)
 
     grid_map = [[0 for _ in range(column)] for _ in range(row)]
+
+    if setOuterLimit:
+        setGridLimit(grid_map)
+
+    grid_map[0][column//2] = 4
+    grid_map[-1][column//2] = 4
+    grid_map[row//2][0] = 4
+    grid_map[row//2][-1] = 4
+
     return grid_map
 
-def setOuterLimit(grid_map):
+def setGridLimit(grid_map):
     """
         Sets the outer limit of the grid_map
 
@@ -72,6 +85,8 @@ def showMap(grid_map, render=True):
                         print(chr(0x1F536), end=" ")
                     case 3: # Death space (SOS emoji)
                         print(chr(0x1F198), end=" ")
+                    case 4: # Door emoji "NEW_ROOM"
+                        print(chr(0x1F6AA), end=" ")
                     case _: # if unknown/unassigned integer, print integer itself
                         print(element, end=" ")
             print("")

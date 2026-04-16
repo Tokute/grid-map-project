@@ -3,11 +3,9 @@ import time
 import os
 import mapTools
 import locationTools
-import playerMovement as move
+import playerTools
 # grid_map is the map of the level or stage
-# 0 = empty space, 1 = player, 2 = outer limit/kill zone, 3 = player meets outer limit
 # TO DO: Try to learn about OOP or refactor the entire program before developing next ideas
-# Also need more ideas to continue this project with:
 """
 Ideas:
     Dynamic Map Shapes
@@ -38,41 +36,74 @@ while True:
         print("Error! column must be greater than 2.")
     """
 
+def determineEvent(indexValue):
+    """
+        Determines what event depending on the integer passed onto this function.
+    """
+    eventIntegers = {
+        0: "FREE",
+        1: "PLAYER",
+        2: "DEATH",
+        3: "DEATH_LOC",
+        4: "NEW_ROOM"
+    }
+
+    if (indexValue) in eventIntegers:
+        print(eventIntegers[indexValue])
+        return eventIntegers[indexValue]
+    else:
+        return "Unregistered or invalid event: {}".format(indexValue)
+
+def applyEvent(event):
+    """
+        Applies the event, complements determineEvent(). This function needs to return True if player is alive.
+    """
+    global grid_map
+    if (event == "DEATH"):
+        return False
+    elif (event == "NEW_ROOM"):
+        grid_map = mapTools.generateMap()
+        grid_map = locationTools.setPlayerLocation(grid_map)
+        return True
+
+
+    return True
+
 #grid_map = mapTools.createMap(row, column)
 grid_map = mapTools.generateMap()
-grid_map = mapTools.setOuterLimit(grid_map)
 grid_map = locationTools.setPlayerLocation(grid_map)
 mapTools.showMap(grid_map)
 
 playerRow, playerColumn = locationTools.getPlayerLocation(grid_map)
 print(f"Player is at [{playerRow}][{playerColumn}]")
 
-newRow, newCol = locationTools.getPlayerLocation(grid_map)
 key_states = {"w": False, "a": False, "s": False, "d": False}
+alive = True
+event = ""
 
-while True:
+while alive:
     lastRow, lastCol = locationTools.getPlayerLocation(grid_map)
     #print(f"Last Row: {lastRow}, Last Column: {lastCol}")
 
-    if not locationTools.isLocationValid(grid_map, lastRow, lastCol):
-        os.system('cls' if os.name == 'nt' else 'clear')
-        grid_map[lastRow][lastCol] = 3
-        mapTools.showMap(grid_map)
-        print("Player hit the grid. Player has died")
-        break
+    #alive = applyEvent(event)
 
     moved = False
     for key in key_states:
         if keyboard.is_pressed(key):
             if not key_states[key]:
-                match key:
-                    case 'w': move.up(grid_map, lastRow, lastCol)
-                    case 's': move.down(grid_map, lastRow, lastCol)
-                    case 'a': move.left(grid_map, lastRow, lastCol)
-                    case 'd': move.right(grid_map, lastRow, lastCol)
+                try:
+                    event = determineEvent(playerTools.checkNextIndex(grid_map, key))
+                    match key:
+                        case 'w': playerTools.up(grid_map)
+                        case 's': playerTools.down(grid_map)
+                        case 'a': playerTools.left(grid_map)
+                        case 'd': playerTools.right(grid_map)
+                except IndexError as ie:
+                    print("Error index invalid.")
 
                 moved = True
                 key_states[key] = True
+                alive = applyEvent(event)
                 break
         else:
             key_states[key] = False
@@ -80,10 +111,19 @@ while True:
     if moved:
         os.system('cls' if os.name == 'nt' else 'clear')
         mapTools.showMap(grid_map)
+        playerRow, playerColumn = locationTools.getPlayerLocation(grid_map)
+        print(f"Player is at [{playerRow}][{playerColumn}]")
         #newRow, newCol = getPlayerLocation()
 
     if keyboard.is_pressed("esc"):
-        
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("Menu Screen")
         break
 
     time.sleep(0.05)
+
+lastRow, lastCol = locationTools.getPlayerLocation(grid_map)
+os.system('cls' if os.name == 'nt' else 'clear')
+grid_map[lastRow][lastCol] = 3
+mapTools.showMap(grid_map)
+print("Player hit the grid. Player has died")
