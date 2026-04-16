@@ -1,11 +1,9 @@
 import keyboard
 import time
 import os
-import playerMovement as move
 import mapTools
 import locationTools
-
-
+import playerMovement as move
 # grid_map is the map of the level or stage
 # 0 = empty space, 1 = player, 2 = outer limit/kill zone, 3 = player meets outer limit
 # TO DO: Try to learn about OOP or refactor the entire program before developing next ideas
@@ -25,7 +23,10 @@ Ideas:
         manages to reach this index, they will advance to another room.
         (This project is gonna need more handling on more grid_maps)
 """
+
+"""
 while True:
+    This was before adding generateMap()
     row = int(input("What will be the number of rows for this map: "))
     column = int(input("What will be the number of columns for this map: "))
 
@@ -35,11 +36,13 @@ while True:
         print("Error! row must be greater than 2.")
     elif (column < 3):
         print("Error! column must be greater than 2.")
+    """
 
-grid_map = mapTools.createMap(row, column)
+#grid_map = mapTools.createMap(row, column)
+grid_map = mapTools.generateMap()
 grid_map = mapTools.setOuterLimit(grid_map)
 grid_map = locationTools.setPlayerLocation(grid_map)
-mapTools.showMap(grid_map, render=True)
+mapTools.showMap(grid_map)
 
 playerRow, playerColumn = locationTools.getPlayerLocation(grid_map)
 print(f"Player is at [{playerRow}][{playerColumn}]")
@@ -54,7 +57,7 @@ while True:
     if not locationTools.isLocationValid(grid_map, lastRow, lastCol):
         os.system('cls' if os.name == 'nt' else 'clear')
         grid_map[lastRow][lastCol] = 3
-        mapTools.showMap(grid_map, render=True)
+        mapTools.showMap(grid_map)
         print("Player hit the grid. Player has died")
         break
 
@@ -76,7 +79,7 @@ while True:
 
     if moved:
         os.system('cls' if os.name == 'nt' else 'clear')
-        mapTools.showMap(grid_map, render=True)
+        mapTools.showMap(grid_map)
         #newRow, newCol = getPlayerLocation()
 
     if keyboard.is_pressed("esc"):

@@ -1,3 +1,4 @@
+import random
 grid_map = []
 
 def createMap(row, column):
@@ -14,6 +15,16 @@ def createMap(row, column):
     grid_map = [[0 for _ in range(column)] for _ in range(row)]
     return grid_map
 
+def generateMap():
+    """
+        generateMap basically generates a 2d List randomly. No Args, Returns grid_map (2d List)
+    """
+    row = random.randint(3, 10)
+    column = random.randint(3, 10)
+
+    grid_map = [[0 for _ in range(column)] for _ in range(row)]
+    return grid_map
+
 def setOuterLimit(grid_map):
     """
         Sets the outer limit of the grid_map
@@ -24,7 +35,7 @@ def setOuterLimit(grid_map):
             grid_map (2d List): grid_map with 2s on the edge
     """
     row = len(grid_map)
-    column = len (grid_map[0])
+    column = len(grid_map[0])
     for i in range(row):
         for j in range(column):
             if (i == 0 or i == row-1):
@@ -34,7 +45,7 @@ def setOuterLimit(grid_map):
                 grid_map[i][j] = 2
     return grid_map
 
-def showMap(grid_map, render=False):
+def showMap(grid_map, render=True):
     """
         Prints out the grid_map
         
