@@ -1,3 +1,9 @@
+"""
+map_tools.py
+
+this module stores the functions needed for map creation, printing, and the like.
+"""
+
 import random
 grid_map = []
 
