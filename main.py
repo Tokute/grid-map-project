@@ -23,7 +23,7 @@ def determine_event(index_value):
     }
 
     if index_value in event_integers:
-        print(event_integers[index_value])
+        #print(event_integers[index_value])
         return event_integers[index_value]
     else:
         return str(f"Unregistered or invalid event: {index_value}")
@@ -38,17 +38,17 @@ def apply_event(given_event):
 
     if given_event == "NEW_ROOM":
         grid_map = map_tools.generate_map()
-        grid_map = location_tools.set_player_location(grid_map)
+        grid_map = location_tools.set_player_location_middle(grid_map)
         return True
 
     return True
 
 #grid_map = map_tools.create_map(row, column)
 grid_map = map_tools.generate_map()
-grid_map = location_tools.set_player_location(grid_map)
+grid_map = location_tools.set_player_location_middle(grid_map)
 map_tools.show_map(grid_map)
 
-player_row, player_column = location_tools.get_player_location(grid_map)
+player_row, player_column = location_tools.get_index_of_integer(grid_map, 1)
 print(f"Player is at [{player_row}][{player_column}]")
 
 key_states = {"w": False, "a": False, "s": False, "d": False}
@@ -56,7 +56,7 @@ is_alive = True
 event = ""
 
 while is_alive:
-    last_row, last_col = location_tools.get_player_location(grid_map)
+    last_row, last_col = location_tools.get_index_of_integer(grid_map, 1)
     #print(f"Last Row: {last_row}, Last Column: {last_col}")
 
     #is_alive = apply_event(event)
@@ -66,7 +66,7 @@ while is_alive:
         if keyboard.is_pressed(key):
             if not key_states[key]:
                 try:
-                    event = determine_event(player_tools.check_next_index(grid_map, key))
+                    event = determine_event(player_tools.integer_of_next_index(grid_map, key))
                     match key:
                         case 'w': player_tools.up(grid_map)
                         case 's': player_tools.down(grid_map)
@@ -85,7 +85,7 @@ while is_alive:
     if moved:
         os.system('cls' if os.name == 'nt' else 'clear')
         map_tools.show_map(grid_map)
-        player_row, player_column = location_tools.get_player_location(grid_map)
+        player_row, player_column = location_tools.get_index_of_integer(grid_map, 1)
         print(f"Player is at [{player_row}][{player_column}]")
         #new_row, new_col = getPlayerLocation()
 
@@ -96,7 +96,7 @@ while is_alive:
 
     time.sleep(0.05)
 
-last_row, last_col = location_tools.get_player_location(grid_map)
+last_row, last_col = location_tools.get_index_of_integer(grid_map, 1)
 os.system('cls' if os.name == 'nt' else 'clear')
 grid_map[last_row][last_col] = 3
 map_tools.show_map(grid_map)

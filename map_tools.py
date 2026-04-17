@@ -27,7 +27,7 @@ def create_map(row, column, set_outer_limit=True):
 
 def generate_map(set_outer_limit=True):
     """
-        generate_map basically generates a 2d List randomly. No Args, Returns grid_map (2d List)
+        generate_map basically generates a 2d List randomly. Args: set_outer_limit is True, Returns grid_map (2d List)
     """
     row = random.randint(5, 10)
     column = random.randint(5, 10)
