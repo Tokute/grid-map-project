@@ -6,9 +6,13 @@ import keyboard
 import map_tools
 import location_tools
 import player_tools
+import interaction_screen
 # grid_map is the map of the level or stage
 # TO DO: Try to learn about OOP or refactor the entire program before developing next ideas
 
+def clear_terminal():
+    """just clears terminal."""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def determine_event(index_value):
     """
@@ -19,7 +23,8 @@ def determine_event(index_value):
         1: "PLAYER",
         2: "DEATH",
         3: "DEATH_LOC",
-        4: "NEW_ROOM"
+        4: "NEW_ROOM",
+        5: "NPC"
     }
 
     if index_value in event_integers:
@@ -41,9 +46,22 @@ def apply_event(given_event):
         grid_map = location_tools.set_player_location_middle(grid_map)
         return True
 
+    if given_event == "NPC":
+        npc_int = interaction_screen.npc_dialogue()
+        print("1. Talk\n2. Leave")
+        while True:
+            check_input = keyboard.read_event()
+            if check_input.event_type == keyboard.KEY_DOWN:
+                if check_input.name == "2":
+                    break
+                if check_input.name == "1":
+                    clear_terminal()
+                    interaction_screen.npc_dialogue(interacted=True, npc_interacted=npc_int)
+                    print("1. Talk\n2. Leave")
+
     return True
 
-#grid_map = map_tools.create_map(row, column)
+#grid_map = map_tools.create_map(row, column)a
 grid_map = map_tools.generate_map()
 grid_map = location_tools.set_player_location_middle(grid_map)
 map_tools.show_map(grid_map)
@@ -83,21 +101,21 @@ while is_alive:
             key_states[key] = False
 
     if moved:
-        os.system('cls' if os.name == 'nt' else 'clear')
+        clear_terminal()
         map_tools.show_map(grid_map)
         player_row, player_column = location_tools.get_index_of_integer(grid_map, 1)
         print(f"Player is at [{player_row}][{player_column}]")
         #new_row, new_col = getPlayerLocation()
 
     if keyboard.is_pressed("esc"):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        clear_terminal()
         print("Menu Screen")
         break
 
     time.sleep(0.05)
 
 last_row, last_col = location_tools.get_index_of_integer(grid_map, 1)
-os.system('cls' if os.name == 'nt' else 'clear')
+clear_terminal()
 grid_map[last_row][last_col] = 3
 map_tools.show_map(grid_map)
 print("Player hit the grid. Player has died")
