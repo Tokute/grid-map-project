@@ -23,6 +23,12 @@ def create_map(row, column, set_outer_limit=True):
     if set_outer_limit:
         set_grid_limit(grid_map)
 
+    # Sets door traversal integers
+    grid_map[0][column//2] = 4
+    grid_map[-1][column//2] = 4
+    grid_map[row//2][0] = 4
+    grid_map[row//2][-1] = 4
+
     return grid_map
 
 def generate_map(set_outer_limit=True):
@@ -37,10 +43,17 @@ def generate_map(set_outer_limit=True):
     if set_outer_limit:
         set_grid_limit(grid_map)
 
+    # Sets door traversal integers
     grid_map[0][column//2] = 4
     grid_map[-1][column//2] = 4
     grid_map[row//2][0] = 4
     grid_map[row//2][-1] = 4
+
+    # Generate random NPCS
+    random_row = random.randint(1, row-2)
+    random_col = random.randint(1, column-2)
+
+    grid_map[random_row][random_col] = 5
 
     return grid_map
 
@@ -93,6 +106,8 @@ def show_map(grid_map, render=True):
                         print(chr(0x1F198), end=" ")
                     case 4: # Door emoji "NEW_ROOM"
                         print(chr(0x1F6AA), end=" ")
+                    case 5: # NPC emoji "NPC"
+                        print(chr(0x1F64B), end=" ")
                     case _: # if unknown/unassigned integer, print integer itself
                         print(element, end=" ")
             print("")
