@@ -1,81 +1,32 @@
 """
 map_tools.py
 
-this module stores the functions needed for map creation, printing, and the like.
+this file stores the functions needed for map creation, printing, and the like.
 """
 
 import random
 grid_map = []
 
-def create_map(row, column, set_outer_limit=True):
-    """
-        Creates the map from two arguments(row, column)
+class GridMap:
+    def __init__(self):
+        self.grid_map = []
 
-        Args:
-            row (int): num of rows
-            column (int): num of columns
+    def initialize_map(self, outer_limit=True):
+        row = random.randint(5, 10)
+        column = random.randint(5, 10)
+        self.grid_map = [[0 for _ in range(column)] for _ in range(row)]
 
-        Returns:
-            grid_map (2d List): filled with zeros with rows and columns based on the args
-    """
-    grid_map = [[0 for _ in range(column)] for _ in range(row)]
+    def print_map(self, render=False):
+        if not render:
+            for row in self.grid_map:
+                for element in row:
+                    print(element, end=" ")
+                print()
 
-    if set_outer_limit:
-        set_grid_limit(grid_map)
+    def create_map(self, row, column):
+        self.grid_map = [[0 for _ in range(column)] for _ in range(row)]
 
-    # Sets door traversal integers
-    grid_map[0][column//2] = 4
-    grid_map[-1][column//2] = 4
-    grid_map[row//2][0] = 4
-    grid_map[row//2][-1] = 4
 
-    return grid_map
-
-def generate_map(set_outer_limit=True):
-    """
-        generate_map basically generates a 2d List randomly. Args: set_outer_limit is True, Returns grid_map (2d List)
-    """
-    row = random.randint(5, 10)
-    column = random.randint(5, 10)
-
-    grid_map = [[0 for _ in range(column)] for _ in range(row)]
-
-    if set_outer_limit:
-        set_grid_limit(grid_map)
-
-    # Sets door traversal integers
-    grid_map[0][column//2] = 4
-    grid_map[-1][column//2] = 4
-    grid_map[row//2][0] = 4
-    grid_map[row//2][-1] = 4
-
-    # Generate random NPCS
-    random_row = random.randint(1, row-2)
-    random_col = random.randint(1, column-2)
-
-    grid_map[random_row][random_col] = 5
-
-    return grid_map
-
-def set_grid_limit(grid_map):
-    """
-        Sets the outer limit of the grid_map
-
-        No args
-
-        Returns:
-            grid_map (2d List): grid_map with 2s on the edge
-    """
-    row = len(grid_map)
-    column = len(grid_map[0])
-    for i in range(row):
-        for j in range(column):
-            if (i == 0 or i == row-1):
-                grid_map[i][j] = 2
-
-            if (j == 0 or j == column-1):
-                grid_map[i][j] = 2
-    return grid_map
 
 def show_map(grid_map, render=True):
     """
