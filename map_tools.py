@@ -4,7 +4,10 @@ map_tools.py
 this file stores the functions needed for map creation, printing, and the like.
 """
 
+
 import random
+import entities
+
 grid_map = []
 
 class GridMap:
@@ -14,51 +17,49 @@ class GridMap:
     def initialize_map(self, outer_limit=True):
         row = random.randint(5, 10)
         column = random.randint(5, 10)
-        self.grid_map = [[0 for _ in range(column)] for _ in range(row)]
+        self.grid_map = [[entities.BlankSpace() for _ in range(column)] for _ in range(row)]
 
-    def print_map(self, render=False):
+        if outer_limit:
+            row = len(self.grid_map)
+            column = len(self.grid_map[0])
+            for i in range(row):
+                for j in range(column):
+                    if ((i == 0 or i == row-1) or (j == 0 or j == column-1)):
+                        self.grid_map[i][j] = entities.KillZone()
+
+        self.grid_map[0][column//2] = entities.Door()
+        self.grid_map[-1][column//2] = entities.Door()
+        self.grid_map[row//2][0] = entities.Door()
+        self.grid_map[row//2][-1] = entities.Door()
+
+        # For random npcs:
+        random_row = random.randint(1, row-2)
+        random_col = random.randint(1, column-2)
+
+        self.grid_map[random_row][random_col] = entities.NPC()
+
+    def print_map(self, render=True):
         if not render:
             for row in self.grid_map:
                 for element in row:
                     print(element, end=" ")
                 print()
+        else:
+            for row in self.grid_map:
+                for element in row:
+                    try:
+                        print(element.unicode, end=" ")
+                    except AttributeError as ae:
+                        print(element)
+                        print(ae)
+                print("")
+    
+    def get_map(self):
+        return self.grid_map
 
     def create_map(self, row, column):
         self.grid_map = [[0 for _ in range(column)] for _ in range(row)]
 
+    def modify_map(self, row, column, new_val):
+        self.grid_map[row][column] = new_val
 
-
-def show_map(grid_map, render=True):
-    """
-        Prints out the grid_map
-        
-        Args:
-            render (bool): determines if the function will print pure integers or unicode
-
-        No Returns
-    """
-
-    if not render:
-        for row in grid_map:
-            for element in row:
-                print(element, end=" ")
-            print("")
-    else:
-        for row in grid_map:
-            for element in row:
-                match (element):
-                    case 0: # Free space (black square emoji)
-                        print(chr(0x2B1B), end=" ")
-                    case 1: # Player space (checkmark emoji)
-                        print(chr(0x2705), end=" ")
-                    case 2: # Outer/Killzone space (red diamond emoji)
-                        print(chr(0x1F536), end=" ")
-                    case 3: # Death space (SOS emoji)
-                        print(chr(0x1F198), end=" ")
-                    case 4: # Door emoji "NEW_ROOM"
-                        print(chr(0x1F6AA), end=" ")
-                    case 5: # NPC emoji "NPC"
-                        print(chr(0x1F64B), end=" ")
-                    case _: # if unknown/unassigned integer, print integer itself
-                        print(element, end=" ")
-            print("")

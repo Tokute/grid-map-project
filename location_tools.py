@@ -1,36 +1,20 @@
 """
 location_tools.py
 
-This module has setplayerlocation and getplayerlocation methods.
+This module has and get_index_of_integer methods.
 """
 
-def set_player_location_middle(grid_map):
-    """
-        Sets the player location on the middle of the grid_map
-
-        Args:
-            grid_map (2d List): map to scan
-
-        Returns:
-        grid_map (2d List): grid_map with a number 1 on the middle
-    """
-    row = len(grid_map)
-    column = len (grid_map[0])
-    grid_map[row//2][column//2] = 1
-
-    return grid_map
-
-def get_index_of_integer(grid_map, given_integer):
+def get_index(grid_map, given_obj):
     """This function takes in grid_map (2d List) and given_integer as its parameters.
     returns row, column of where the given_integer is."""
 
-    row = len(grid_map)
-    column = len (grid_map[0])
+    row = len(grid_map.get_map())
+    column = len(grid_map.get_map()[0])
     found_row, found_column = -1, -1
 
     for i in range(row):
         for j in range(column):
-            if grid_map[i][j] == given_integer:
+            if grid_map.get_map()[i][j] == given_obj:
                 found_row, found_column = i, j
     
     return found_row, found_column
