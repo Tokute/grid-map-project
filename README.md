@@ -1,15 +1,37 @@
 This small project basically uses a 2d list to to show the playable area. This must not have any good reasons or causes but I wanna try making a small program that takes in my current coding knowledge from my first year of CS and basically the progress of my learnings.
 
 Updates:
-    NPC Dialogues have been added.
+    OOP has been implemented across the files.
 
-    One issue I've seen is that once you are finished talking with an npc, they will disappear from the grid_map once you leave. I may keep this for enemies but not for NPCs that you can keep talking to.
+    entities.py:
+        entity_id = integer associated/assigned with the object
+        name = string name of the object (for documentation or other purposes)
+        unicode = unicode to print to the terminal (for print_map function of map_tools)
 
-    To add on to what I said above. I badly need to revamp the entire code to have OOP. This might have significantly faster development speed as events, players, npcs, enemies, entities, even the map itself can be objects. Welp time to learn ig...
+    location_tools.py:
+        shortened get_index_of_intger into get_index
+        also adjusted for objects.
 
+    main.py:
+        many changes to use objects.
+        added initializations of objects.
 
+    map_tools.py:
+        many changes (again).
+        turned gridmap into a full object for scalability and organization.
+        print_map now includes unicode.
+        initialize_map now assigns objects instead of integers.
+
+    player_tools.py:
+        adjusted accordingly to use objects instead of integers.
+        movement logic now condensed into one function instead of 4 separate functions for up, down, left, right.
 
 Ideas:
+    main.py:
+        Determine event and apply event into one function.
+            Since we are already working with objects, determine event might not be needed anymore.
+            apply_event could use the entity.name or entity.id or entity class will have a new attribute called event_id.
+
     Dynamic Map Shapes (Very difficult)
         this will make each grid_map dynamic with different or combined shapes
         currently dont have any idea how can I do this, will need research
